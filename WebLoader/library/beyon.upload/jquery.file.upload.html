@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <title>文件上传</title>
+        <script>
+            var _name = location.pathname.match(/^\/[\w|-]*/);
+            document.writeln("<script src='" + _name + "/web.loader.init.js?" + new Date().getTime() + "'><\/script>");
+        </script>
+        <script>
+        	Response(["x.file.upload.plus","./jquery.file.upload.test.js"])
+        </script>
+    </head>
+    <body class="body-transparent skin-green">
+    	
+    	<center>
+    		<button id="btn-upload">上传文件</button>
+    	</center>
+    </body>
+</html>

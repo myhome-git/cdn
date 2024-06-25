@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="common.css" />
+		<script src="../jquery-1.8.3.js" ></script>
+		<script src="x.table.js"></script>
+		<style>
+			#test{
+				min-width: 700px;
+				height: 400px;
+				overflow: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="test">请修改jquery路径</div>
+		<script>
+			var oTable;
+			(function($){
+				$(document).ready(documentReady);
+				function documentReady(){
+					var s = {
+						tableId : "#test",
+						checkbox: "checkbox",
+						Columns : [{
+							field: 'id',
+							title: 'ID',
+							width:"300px"
+						},{
+							field: 'name',
+							title: 'Name',
+							width:"100%"
+						},{
+							field: 'sid',
+							title: 'Sid',
+							width:"100%"
+						}]
+					};
+					
+					
+					//创建对象
+					oTable = new xTable();
+					//对象初始化
+					oTable.init(s);
+					
+					//配置查询参数
+					oTable.queryParams = function (params) {
+						var p = {
+							url : "http://www.onlinehome.top/AddressServer/src/webApi/public/get-address-list.asp ",
+							type : "post",
+							data : (function(){
+								var _data = {
+									page : {
+										pageSize : params.pageSize,
+										pageIndex : params.pageIndex
+									}
+								};
+								return _data;
+							})()
+						};
+						
+						console.info(p);
+						
+						return p;
+					};
+					
+					//向服务器请求数据
+					oTable.ajaxGetTableData();
+					
+				}
+			})(jQuery);
+		</script>
+	</body>
+</html>

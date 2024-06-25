@@ -1,0 +1,31 @@
+#xyd-jsp-page {
+	padding: 10px 0 10px 0
+}
+
+#xyd-jsp-page .page-info {
+	line-height: 30px;
+	height: 30px;
+	padding-right: 20px
+}
+
+#xyd-jsp-page .page-bean {
+	background: #D60314;
+	color: #fff;
+	padding-left: 7px;
+	padding-right: 7px;
+	height: 30px;
+	line-height: 30px
+}
+
+#xyd-jsp-page .page-bean.disable {
+	background: #aaa;
+	color: #333
+}
+
+#xyd-jsp-page .page-step a {
+	background: #D60314;
+	color: #fff;
+	line-height: 30px;
+	min-width: 30px;
+	height: 30px
+}

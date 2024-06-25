@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>ckplayer</title>
+		<script type="text/javascript" src="ckplayer/ckplayer.js" charset="UTF-8"></script>
+		<style type="text/css">
+			body {
+				margin: 0;
+				padding: 0px;
+				font-family: "Microsoft YaHei", YaHei, "微软雅黑", SimHei, "黑体";
+				font-size: 14px
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div id="video" style="width: 600px; height: 400px;"></div>
+		<script type="text/javascript">
+			var videoObject = {
+				//playerID:'ckplayer01',//播放器ID，第一个字符不能是数字，用来在使用多个播放器时监听到的函数将在所有参数最后添加一个参数用来获取播放器的内容
+				container: '#video', //容器的ID或className
+				variable: 'player', //播放函数名称
+				loaded: 'loadedHandler', //当播放器加载后执行的函数
+				//loop: true, //播放结束是否循环播放
+				autoplay: true, //是否自动播放
+				//duration: 500, //设置视频总时间
+				poster: 'material/poster.jpg', //封面图片
+				preview: { //预览图片
+					file: ['material/mydream_en1800_1010_01.png', 'material/mydream_en1800_1010_02.png'],
+					scale: 2
+				},
+				config: '', //指定配置函数
+				debug: false, //是否开启调试模式
+				drag: 'start', //拖动的属性
+				seek: 0, //默认跳转的时间
+				video: [
+			        ['/DaPingZhanShi/main-page/dapingmoban/8/BasicVideo.mp4', 'video/mp4', '中文标清', 0]
+			    ]
+			};
+			var player = new ckplayer(videoObject);
+			function loadedHandler() {
+				player.addListener('error', errorHandler); //监听视频加载出错
+				player.addListener('loadedmetadata', loadedMetaDataHandler); //监听元数据
+				player.addListener('buffer', bufferHandler); //监听缓冲状态
+				player.addListener('ended', endedHandler); //监听播放结束
+			}
+			function errorHandler() {
+				//状态：视频加载错误，停止执行其它动作，等待其它操作
+				
+			}
+
+			function loadedMetaDataHandler() {
+				player.changeControlBarShow(false);
+				var metaData = player.getMetaDate();
+			}
+
+			function bufferHandler(buffer) {
+				
+			}
+
+			function endedHandler() {
+				//播放结束
+			}
+
+			function newVideo() {
+				var videoUrl = player.getByElement('.videourl').value;
+				changeVideo(videoUrl);
+			}
+
+			function newVideo2() {
+				var videoUrl = player.getByElement('.videourl2').value;
+				changeVideo(videoUrl);
+			}
+
+			function changeVideo(videoUrl) {
+				if(player == null) {
+					return;
+				}
+
+				var newVideoObject = {
+					container: '#video', //容器的ID
+					variable: 'player',
+					autoplay: true, //是否自动播放
+					loaded: 'loadedHandler', //当播放器加载后执行的函数
+					video: videoUrl
+				}
+				//判断是需要重新加载播放器还是直接换新地址
+
+				if(player.playerType == 'html5video') {
+					if(player.getFileExt(videoUrl) == '.flv' || player.getFileExt(videoUrl) == '.m3u8' || player.getFileExt(videoUrl) == '.f4v' || videoUrl.substr(0, 4) == 'rtmp') {
+						player.removeChild();
+
+						player = null;
+						player = new ckplayer();
+						player.embed(newVideoObject);
+					} else {
+						player.newVideo(newVideoObject);
+					}
+				} else {
+					if(player.getFileExt(videoUrl) == '.mp4' || player.getFileExt(videoUrl) == '.webm' || player.getFileExt(videoUrl) == '.ogg') {
+						player = null;
+						player = new ckplayer();
+						player.embed(newVideoObject);
+					} else {
+						player.newVideo(newVideoObject);
+					}
+				}
+			}
+			
+			function changeText(div, text) {
+				player.getByElement(div).innerHTML = text;
+			}
+
+		</script>
+		<p>
+			<button type="button" onclick="loadedMetaDataHandler()">获取元数据</button>
+		</p>
+		<p>
+			<button type="button" onclick="player.changeControlBarShow(true)">显示控制栏</button>
+			<button type="button" onclick="player.changeControlBarShow(false)">隐藏控制栏</button>
+		</p>
+		<p>
+			<input type="text" class="videourl" style="width: 500px;" placeholder="视频地址" value="http://www.flashls.org/playlists/test_001/stream_1000k_48k_640x360.m3u8">
+
+			<button type="button" onclick="newVideo()">播放</button>
+		</p>
+		<p>
+			<input type="text" class="videourl2" style="width: 500px;" placeholder="视频地址" value="http://img.ksbbs.com/asset/Mon_1703/d30e02a5626c066.mp4">
+
+			<button type="button" onclick="newVideo2()">播放</button>
+
+		</p>
+		<p class="metadata"></p>
+		<p>单独监听功能：</p>
+		<p class="handler">
+			<span class="endedstate">还未结束</span><br />
+		</p>
+	</body>
+
+</html>

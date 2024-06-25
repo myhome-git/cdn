@@ -1,0 +1,172 @@
+.x-accordion-panel-box{
+	color: #333;
+	border-radius: 3px;
+	position: relative;
+	transition: all .3s ease 0s;
+	font-size: 15px;
+}
+.x-accordion-panel-box .x-button-close,
+.x-accordion-panel-box .x-button-shrink{
+	position: absolute;
+	left: -20px;
+	top: 50%;
+	margin-top: -30px;
+	width: 20px;
+	height: 60px;
+	text-align: center;
+	line-height: 60px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	cursor: pointer;
+}
+.x-accordion-panel-box .x-accordion-panel{
+	border-radius: 3px;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item{
+	position: relative;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item .x-accordion-title{
+	height: 42px;
+	line-height: 42px;
+	padding: 0px 10px 0px 10px;
+	position: relative;
+	font-size: inherit;
+	cursor: pointer;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item .x-accordion-title .iconfont{
+	font-size: inherit;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item .x-accordion-title .iconfont:first-child{
+	margin-right: 5px;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item .x-accordion-title > .iconfont.x-iconfont-down{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 10px;
+	font-size: 14px;
+	cursor:pointer;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item .x-accordion-title + .x-accordion-children{
+	padding: 10px 10px 10px 10px;
+	display: none;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item:first-child .x-accordion-title{
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.x-accordion-panel-box .x-accordion-panel .x-accordion-item:last-child .x-accordion-children{
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	font-size: 14px;
+}
+
+.x-accordion-panel-box.skin-default{
+	border: 1px solid rgba(221,221,221,1);
+}
+.x-accordion-panel-box.skin-default .x-accordion-item .x-accordion-title{
+	background: rgba(255,255,255,0.9);
+	border-bottom: 1px solid rgba(221,221,221,0.9);
+}
+.x-accordion-panel-box.skin-default .x-accordion-item .x-accordion-title + .x-accordion-children{
+	background: rgba(221,221,221,0.3);
+	position: relative;
+}
+.x-accordion-panel-box.skin-default .x-accordion-item .x-accordion-title + .x-accordion-children:after{
+	display: block;
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1;
+	border-bottom: 1px solid rgba(221,221,221,0.3);
+}
+.x-accordion-panel-box.skin-default .x-button-close,
+.x-accordion-panel-box.skin-default .x-button-shrink{
+	background: rgba(221,221,221,0.1);
+	border: 1px solid rgba(221,221,221,0.9);
+}
+
+.x-accordion-panel-box.skin-black{
+	border: 1px solid rgba(35,52,74,0.9);
+	color: #fff;
+}
+.x-accordion-panel-box.skin-black .x-button-close,
+.x-accordion-panel-box.skin-black .x-button-shrink{
+	background: rgba(35,52,74,0.9);
+	border: 1px solid rgba(35,52,74,0.9);
+}
+.x-accordion-panel-box.skin-black .x-accordion-item .x-accordion-title{
+	background: rgba(35,52,74,0.9);
+	border-bottom: 1px solid rgba(149,184,231,0.1);
+}
+.x-accordion-panel-box.skin-black .x-accordion-item .x-accordion-title + .x-accordion-children{
+	background: rgba(35,52,74,0.75);
+}
+.x-accordion-panel-box.skin-black .x-accordion-item .x-accordion-title + .x-accordion-children:after{
+	display: block;
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1;
+	border-bottom: 1px solid rgba(149,184,231,0.1);
+}
+
+.x-accordion-panel-box.skin-cowhide{
+	border: 1px solid rgba(213,162,119,0.9);
+	color: #fff;
+}
+.x-accordion-panel-box.skin-cowhide .x-button-close,
+.x-accordion-panel-box.skin-cowhide .x-button-shrink{
+	background: rgba(213,162,119,0.9);
+	border: 1px solid rgba(213,162,119,0.9);
+}
+.x-accordion-panel-box.skin-cowhide .x-accordion-item .x-accordion-title{
+	background: rgba(213,162,119,0.9);
+	border-bottom: 1px solid rgba(213,162,119,0.9);
+}
+.x-accordion-panel-box.skin-cowhide .x-accordion-item .x-accordion-title + .x-accordion-children{
+	background: rgba(213,162,119,0.75);
+}
+.x-accordion-panel-box.skin-cowhide .x-accordion-item .x-accordion-title + .x-accordion-children:after{
+	display: block;
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1;
+	border-bottom: 1px solid rgba(213,162,119,0.9);
+}
+.x-accordion-panel-box.skin-blue{
+	border: 1px solid rgba(0,123,185,0.9);
+	color: #fff;
+}
+.x-accordion-panel-box.skin-blue .x-button-close,
+.x-accordion-panel-box.skin-blue .x-button-shrink{
+	background: rgba(0,123,185,0.9);
+	border: 1px solid rgba(0,123,185,0.9);
+}
+.x-accordion-panel-box.skin-blue .x-accordion-item .x-accordion-title{
+	background: rgba(0,123,185,0.9);
+	border-bottom: 1px solid rgba(0,123,185,0.9);
+}
+.x-accordion-panel-box.skin-blue .x-accordion-item .x-accordion-title + .x-accordion-children{
+	background: rgba(0,123,185,0.75);
+}
+.x-accordion-panel-box.skin-blue .x-accordion-item .x-accordion-title + .x-accordion-children:after{
+	display: block;
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1;
+	border-bottom: 1px solid rgba(0,123,185,0.9);
+}

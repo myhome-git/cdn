@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>通用上传组件调用示例</title>
+		<script>
+			document.writeln("<script src='/WebFrame/Common.init.js?"+new Date().getTime()+"'><\/script>");
+		</script>
+		<script>
+			Response([
+				{"c":"common"},
+				{"j":"x.file.upload.main"}
+			]);
+		</script>
+	</head>
+	<body>
+		<div class="layui-form-item">
+			<label class="layui-form-label">文件选择：</label>
+			<div class="layui-input-block">
+				<button id="button-model-dmt" type="button" class="layui-btn layui-btn-sm">上传多媒体</button>
+				<font></font>
+			</div>
+		</div>
+		<script>
+			var _FunctionObject = {};
+			var _classFileUpdateControlMain = new ClassFileUpdateControlMain();
+			(function(){
+				$(document).ready(function(){
+					
+					$("#button-model-dmt").on("click",function(){
+	        		
+		        		var _this = this,
+		        		
+		        			$this = $(this);
+		        			
+		        		_classFileUpdateControlMain.SetUplaodType("image");
+		        		
+		        		_classFileUpdateControlMain.SetUplaodSize("100kb");
+		        		
+		        		var _default = {
+							id : "layer-open-update",
+				            type: 2,
+				            anim : -1,
+				            title: "多媒体上传",
+				            shade : 0.2,
+				            area: ['694px', '500px'],
+				            shadeClose: false,
+				            isOutAnim : false,
+				            content: _classFileUpdateControlMain.GetLoadURL(),
+				            btn: ['确定', '取消'],
+				            yes: function (index) {
+				            	
+				            	var _iframeUpload = xUtilBase.GetIframeContentWindowById(_classFileUpdateControlMain.GetWindowURL());
+						    	if(!_iframeUpload){
+						    		top.layui.layer.msg("未初始化上传窗口");
+						    		return;
+						    	}
+						    	
+						    	var _data = _iframeUpload._classFileUpdateControl.GetLinkInterfaceUploadSuccessData();
+						    	
+						    	if(_data.uploadFiles.length<1){
+						    		
+						    		top.layui.layer.msg("窗口中没有文件");
+						    		
+						    		return;
+						    		
+						    	}
+						    	
+						    	if(_data.uploadErrorFiles.length>0){
+						    		
+						    		top.layui.layer.msg("窗口中有待处理的文件");
+						    		
+						    		return;
+						    		
+						    	}
+						    	
+						    	$this.next().html("共有["+_data.uploadFiles.length+"]个多媒体文件");
+						    	
+						    	$this.html("管理多媒体文件");
+						    	
+						    	_FunctionObject.__cache = _data;
+						    	
+						    	top.layui.layer.close(_this.__openPanelIndex);
+				            	
+				            },
+				            cancel: function(index, layero){
+								
+							}, 
+							end : function(index, layero){
+				            	
+				            },
+				            success: function(layero, index){
+							   
+								_this.__openPanelIndex = index;
+							   
+							   //如果有缓存则反显
+								if(_FunctionObject.__cache){
+				        			
+				        			var _iframeUpload = xUtilBase.GetIframeContentWindowById(_classFileUpdateControlMain.GetWindowURL());
+				        			
+							    	if(!_iframeUpload){
+							    		
+							    		top.layui.layer.msg("未初始化上传窗口");
+							    		
+							    		return;
+							    		
+							    	}
+							    	
+							    	var _data = _FunctionObject.__cache;
+							    	
+							    	var _classFileUpdateControl = _iframeUpload._classFileUpdateControl;
+				        			
+				        			$.each(_data.uploadFiles, function(index,el) {
+				        				
+				        				//回显地址
+				        				el.httpURL = "/model_3d/dmt/getStreamByIdentifier?identifier="+el.__httpUploadRetrun;
+				        				
+				        				_classFileUpdateControl.AddUploadFile(el);
+				        				
+				        			});
+				        			
+				        		}
+							   
+							}
+				        };
+				        
+	//			        $.extend(true, _default, _conf);
+				        
+						top.layui.layer.open(_default);
+		        	});
+					
+				});
+			})(jQuery)
+		</script>
+	</body>
+</html>

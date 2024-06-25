@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script>document.writeln("<script src='../../web.loader.init.js?"+new Date().getTime()+"'><\/script>");</script>
+		<script>
+			Response(["jquery.viewer"]);
+		</script>
+		<style>
+			.viewer-navbar{
+				position: relative;
+			}
+			.diy-info{
+				position: absolute;
+				right: 20px;
+				top: 0px;
+				color: white;
+				width: 100px;
+				border: 1px solid blue;
+				font-size: 14px;
+				line-height: 1.4;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="testView">
+			<li>
+				<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+			</li>
+			<li>
+				<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+			</li>
+			<li>
+				<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+			</li>
+			<li>
+				<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+			</li>
+		</ul>
+		<div id="iamgeView" style="width:0;height:0;overflow:hidden"></div>
+		<script>
+		$(function(){
+			$("#testView").find("a").bind("click",function(){
+				$.get("imageView-ajax.html?id="+new Date().getTime(),function(ret){
+					$("#iamgeView").html(ret);
+					
+					//提取公共功能
+					function enentView(){
+						//得到当前image
+						var $this = $(this),
+							$container = $this.next(".viewer-container"),
+							$containerReadArray = $container.data("__cache") || [];
+							
+						var $ele = $container.find(">.viewer-canvas");
+						var $img;
+						
+						function getImage(){
+							$img = $ele.find("img");
+							if($img.length>0){
+//								console.info("得到image",$img);
+								var _src = $img.attr("src");
+								$ele.attr("last-name",_src);
+//								console.info("当前src",_src);
+								if($containerReadArray.indexOf(_src)<0){
+									$containerReadArray.push(_src);
+									setImageViewerTag();
+//									console.info("未找到记录");
+								}else{
+//									console.info("找到记录");
+									setImageViewerTag(true);
+								}
+								$container.data("__cache",$containerReadArray);
+							}else{
+								setTimeout(getImage,250);
+							}
+							
+						}
+						getImage();
+					}
+					
+					//增加提示信息
+					function setImageViewerTag(isShow){
+						var $container = $("#jq22").next(".viewer-container");
+						var $parent = $container.find(".viewer-footer .viewer-navbar");
+						$parent.find(".diy-info").remove();
+						if(isShow){
+							var $doc = $("<div></div>");
+							$doc.addClass("diy-info").html("已阅读");
+							$parent.append($doc);
+						}
+					}
+					
+					$('#jq22').viewer({
+						transition:false,
+						zoomRatio:0.2,
+						viewed : enentView
+					});
+					setTimeout(function(){
+						$($('#jq22').find("img").get(0)).trigger("click");
+					},100);
+				});
+			});
+		})
+		</script>
+	</body>
+</html>

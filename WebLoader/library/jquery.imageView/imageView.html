@@ -1,0 +1,29 @@
+<script src="jquery.js"></script>
+<ul id="testView">
+	<li>
+		<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+	</li>
+	<li>
+		<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+	</li>
+	<li>
+		<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+	</li>
+	<li>
+		<a href="javaScript:void(0)">点击我开始查看影像资料</a>
+	</li>
+</ul>
+<div id="iamgeView" style="width:0;height:0;overflow:hidden"></div>
+<script>
+$(function(){
+	$("#testView").find("a").bind("click",function(){
+		$.get("imageView-ajax.html?id="+new Date().getTime(),function(ret){
+			$("#iamgeView").html(ret);
+			$('#jq22').viewer({transition:false,zoomRatio:0.2});
+			setTimeout(function(){
+				$($('#jq22').find("img").get(0)).trigger("click");
+			},100);
+		});
+	});
+})
+</script>

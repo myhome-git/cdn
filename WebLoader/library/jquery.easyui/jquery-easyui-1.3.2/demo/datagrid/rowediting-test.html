@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Row Editing DataGrid - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+</head>
+<body>
+	<h2>Row Editing DataGrid</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the row to start editing.</div>
+	</div>
+
+	<div style="margin:10px 0">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="insert()">Insert Row</a>
+	</div>
+	<div id="tb" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">Append</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="remove()">Remove</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">Accept</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>
+	</div>
+	<table id="tt"></table>
+
+	<script>
+
+		var products = [
+		    {productid:'FI-SW-01',name:'Koi'},
+		    {productid:'K9-DL-01',name:'Dalmation'},
+		    {productid:'RP-SN-01',name:'Rattlesnake'},
+		    {productid:'RP-LI-02',name:'Iguana'},
+		    {productid:'FL-DSH-01',name:'Manx'},
+		    {productid:'FL-DLH-02',name:'Persian'},
+		    {productid:'AV-CB-01',name:'Amazon Parrot'}
+		];
+		$(function(){
+			$('#tt').datagrid({
+				title:'Editable DataGrid',
+				iconCls:'icon-edit',
+				width:660,
+				height:250,
+				singleSelect:true,
+				idField:'itemid',
+				url:'datagrid_data1.json',
+				method : 'get',
+				onClickRow: onClickRow,
+				onBeforeEdit : onBeforeEdit,
+				onSelectRow : onSelectRow,
+				onAfterEdit : onAfterEdit,
+				onCancelEdit : onCancelEdit,
+				columns:[[
+					{field:'listprice',title:'名称',width:80,align:'right',editor:false},
+					{field:'unitcost',title:'内容',width:200,align:'right',editor:'text'},
+					{field:'attr1',title:'类型',width:180,editor:false},
+					{field:'status',title:'采集要求',width:200,editor: false}
+				]]
+			});
+		});
+		
+		
+		
+		
+		var editIndex = undefined,
+			$tableBox = $("#tt");
+		
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($tableBox.datagrid('validateRow', editIndex)){
+				var ed = $tableBox.datagrid('getEditor', {index:editIndex,field:'productid'});
+				$tableBox.datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		function onClickRow(index){
+			if (editIndex != index){
+				if (endEditing()){
+					$tableBox.datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+					//onBgeinEditAll();
+					editIndex = index;
+					
+					var $rowDom = $tableBox.prev().find(".datagrid-body tbody > tr:eq("+editIndex+")");
+					if($rowDom){
+						onSelectRowFocus($rowDom,editIndex);
+					}
+				
+				} else {
+					$tableBox.datagrid('selectRow', editIndex);
+				}
+			}
+		}
+		
+		function onSelectNextRow($rowDom){
+			$rowDom.next().trigger("click");
+		}
+		
+		function onSelectRowFocus($rowDom){
+			var $input = $rowDom.find("input[type='text']");
+			$input.focus().select();
+			$input.on("keyup",function(event){
+				//console.info(event.keyCode);
+				if(event.keyCode==13){
+					$rowDom.next().trigger("click");
+				}else if(event.keyCode==38){
+					$rowDom.prev().trigger("click");
+				}else if(event.keyCode==40){
+					$rowDom.next().trigger("click");
+				}
+			})
+		}
+		
+		function onSelectRow(index){
+			console.info("被选择",index);
+		}
+		
+		function onBgeinEditAll(){
+			$.each($tableBox.datagrid('getRows'), function(i,el) {
+				$tableBox.datagrid('beginEdit', i);
+			});
+		}
+			
+		function onBeforeEdit(index,row){
+			//console.info("开始编辑",index,row);
+			row.editing = true;
+		}
+		
+		function onAfterEdit(index,row){
+			//console.info("结束编辑",index);
+			row.editing = false;
+			//updateActions(index);
+		}
+		
+		function onCancelEdit(index,row){
+			//console.info("结束编辑",index);
+			row.editing = false;
+			//updateActions(index);
+		}
+		
+		function append(){
+			if (endEditing()){
+				$tableBox.datagrid('appendRow',{status:'P'});
+				editIndex = $tableBox.datagrid('getRows').length-1;
+				$tableBox.datagrid('selectRow', editIndex)
+					.datagrid('beginEdit', editIndex);
+			}
+		}
+		function remove(){
+			if (editIndex == undefined){return}
+			$tableBox.datagrid('cancelEdit', editIndex)
+					.datagrid('deleteRow', editIndex);
+			editIndex = undefined;
+		}
+		function accept(){
+			if (endEditing()){
+				$tableBox.datagrid('acceptChanges');
+			}
+		}
+		function reject(){
+			$tableBox.datagrid('rejectChanges');
+			editIndex = undefined;
+		}
+		function getChanges(){
+			var rows = $tableBox.datagrid('getChanges');
+			console.info(rows);
+		}
+		
+		
+		function insert(){
+			var row = $tableBox.datagrid('getSelected');
+			if (row){
+				var index = $tableBox.datagrid('getRowIndex', row);
+			} else {
+				index = 0;
+			}
+			$tableBox.datagrid('insertRow', {
+				index: index,
+				row:{
+					status:'P'
+				}
+			});
+			$tableBox.datagrid('selectRow',index);
+			$tableBox.datagrid('beginEdit',index);
+		}
+	</script>
+
+</body>
+</html>
